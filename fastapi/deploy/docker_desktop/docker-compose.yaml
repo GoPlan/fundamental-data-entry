@@ -1,0 +1,18 @@
+version: '3'
+services:
+  dataentryapp:
+    image: goplan/dataentryapp:python3.10
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    expose:
+      - ${FASTAPI_PORT}
+    ports:
+      - ${FASTAPI_PORT}:${FASTAPI_PORT}
+    environment:
+      MONGO_HOST: ${MONGO_HOST}
+      PORT: ${FASTAPI_PORT}
+    volumes:
+      - ../../app:/app
+    command: [ "/start-reload.sh" ]
+    restart: unless-stopped
