@@ -3,7 +3,7 @@ services:
   fastapi:
     image: goplan/fastapi:python3.10
     build:
-      context: ../../
+      context: ../../fastapi
       dockerfile: Dockerfile
     expose:
       - ${FASTAPI_PORT}
@@ -13,6 +13,6 @@ services:
       MONGO_HOST: ${MONGO_HOST}
       PORT: ${FASTAPI_PORT}
     volumes:
-      - ../../app:/app
+      - ./fastapi/app:/app
     command: [ "/start-reload.sh" ]
     restart: unless-stopped
