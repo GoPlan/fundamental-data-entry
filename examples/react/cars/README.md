@@ -1,0 +1,1 @@
+This example is a practice exercise, cloned from https://github.com/PacktPublishing/Full-Stack-FastAPI-React-and-MongoDB

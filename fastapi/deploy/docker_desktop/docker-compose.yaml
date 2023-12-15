@@ -1,7 +1,7 @@
 version: '3'
 services:
   dataentryapp:
-    image: goplan/dataentryapp:python3.10
+    image: fundamentalentryapp:python3.10
     build:
       context: ../../
       dockerfile: Dockerfile
