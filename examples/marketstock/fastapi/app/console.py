@@ -3,9 +3,10 @@ from n3cov98 import select
 
 reload(select)
 
-filepath = "/data.csv"
+filepath = "n3cov98/data.csv"
 
 docs = select.all(filepath)
+
 print(docs.model_dump())
 
 #%%
