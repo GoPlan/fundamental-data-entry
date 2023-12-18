@@ -4,6 +4,7 @@ from n3cov98.select import all
 
 origins = [
     "http://localhost:3000",
+    "http://react:3000",
 ]
 
 app = FastAPI()

@@ -1,5 +1,22 @@
 version: '3'
 services:
+
+#  react:
+#    image: goplan/react:dev
+#    build:
+#      context: react
+#    expose:
+#      - ${REACT_PORT}
+#    ports:
+#      - ${REACT_PORT}:${REACT_PORT}
+#    environment:
+#      PORT: ${REACT_PORT}
+#      CI: true
+#    volumes:
+#      - ./react:/app
+#    command: [ "npm", "start" ]
+#    restart: unless-stopped
+
   fastapi:
     image: goplan/fastapi:python3.10
     build:
@@ -10,7 +27,6 @@ services:
     ports:
       - ${FASTAPI_PORT}:${FASTAPI_PORT}
     environment:
-      MONGO_HOST: ${MONGO_HOST}
       PORT: ${FASTAPI_PORT}
     volumes:
       - ./fastapi/app:/app

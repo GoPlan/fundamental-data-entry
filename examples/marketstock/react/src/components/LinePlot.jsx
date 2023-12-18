@@ -14,9 +14,9 @@ export default function LinePlot() {
             .then(docs => {
                 setData(docs.map(row => {
                     return {
-                        Date: new Date(row.period),
-                        Close: row.close,
-                        Return: row.ret
+                        Date: new Date(row["period"]),
+                        Close: row["close"],
+                        Return: row["ret"]
                     }
                 }));
             })
@@ -46,7 +46,7 @@ export default function LinePlot() {
             color: {scheme: "burd"},
             marks: [
                 Plot.ruleY([0]),
-                Plot.barY(data, {x: "Date", y: "Return", stroke: "ret"})
+                Plot.barY(data, {x: "Date", y: "Return"})
             ]
         });
 
