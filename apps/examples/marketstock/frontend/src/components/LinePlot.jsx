@@ -46,7 +46,7 @@ export default function LinePlot() {
             color: {scheme: "burd"},
             marks: [
                 Plot.ruleY([0]),
-                Plot.barY(data, {x: "Date", y: "Return"})
+                Plot.lineY(data, {x: "Date", y: "Return"})
             ]
         });
 
@@ -64,6 +64,5 @@ export default function LinePlot() {
             <div ref={closeRef}/>
             <div ref={retRef}/>
         </>
-
     );
 }
