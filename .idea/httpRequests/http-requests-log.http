@@ -1,0 +1,445 @@
+GET http://localhost:8005/statement/get/user00/PVT/income/2023Q4/netrevenue
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-03T152639.200.json
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T152634.200.json
+
+###
+
+GET http://localhost:8005/statement/get/user00/PVT/income/2023Q4/netrevenue
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-03T152430.200.json
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T152426.200.json
+
+###
+
+GET http://localhost:8005/statement/get/user00/PVT/income/2023Q4/netrevenue
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2024-01-03T151135.200.json
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150725.200.json
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150717.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150637.200.json
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150559.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150531.200.json
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150445.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T150425.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T145940.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T145641.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T144028.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T143958.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T143545.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T143453.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T143433.500.txt
+
+###
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+Content-Length: 147
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
+<> 2024-01-03T143330.500.txt
+
+###
+
+POST http://localhost:8005/statement/update/user00/PVT/income/2023Q3/netrevenue
+Content-Type: application/json
+Content-Length: 20
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "value": 15000
+}
+
+<> 2024-01-03T142724.422.json
+
+###
+
+POST http://localhost:8005/statement/update/user00/PVT/income/2023Q3/netrevenue
+Content-Type: application/json
+Content-Length: 20
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "value": 15000
+}
+
+<> 2024-01-03T142653.422.json
+
+###
+
+POST http://localhost:8005/statement/update/user00/PVT/income/2023Q3/netrevenue
+Content-Type: application/json
+Content-Length: 20
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "value": 15000
+}
+
+<> 2024-01-03T142443.422.json
+
+###
+
+POST http://localhost:8005/statement/update/user00/PVT/income/2023Q3/netrevenue
+Content-Type: application/json
+Content-Length: 20
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "value": 15000
+}
+
+<> 2024-01-03T142358.422.json
+
+###
+
+POST http://localhost:8005/update/user00/PVT/income/
+Content-Type: application/json
+Content-Length: 20
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.14 (Java/17.0.7)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "value": 15000
+}
+
+<> 2024-01-03T142254.404.json
+
+###
+

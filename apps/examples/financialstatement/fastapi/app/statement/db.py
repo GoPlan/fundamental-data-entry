@@ -5,13 +5,19 @@ from typing import Union
 
 MONGO_HOST = getenv("MONGO_HOST")
 MONGO_PORT = getenv("MONGO_PORT")
+MONGO_USERNAME = getenv("MONGO_USERNAME")
+MONGO_PASSWORD = getenv("MONGO_PASSWORD")
 MONGO_DB = getenv("MONGO_DB")
-MONGO_QUARTER_STATEMENT_COLLECTION = "quarter_statements"
+MONGO_COLLECTION = getenv("MONGO_COLLECTION")
 
 
 def mongo_db():
-    client = MongoClient(host=MONGO_HOST, port=MONGO_PORT)
-    db = client.get_database(MONGO_DB)
+    client = MongoClient(host=MONGO_HOST,
+                         port=int(MONGO_PORT),
+                         username=MONGO_USERNAME,
+                         password=MONGO_PASSWORD)
+
+    db = client.get_default_database(MONGO_DB)
     return db
 
 
@@ -24,29 +30,13 @@ class QuarterStatementRow(BaseModel):
     value: Union[float, None] = None
 
 
-def quarter_statments_collection():
-    coll = mongo_db()[MONGO_QUARTER_STATEMENT_COLLECTION]
+def statments_collection():
+    coll = mongo_db().get_collection(MONGO_COLLECTION)
     return coll
 
 
-def init():
-    _db = mongo_db()
-    if MONGO_QUARTER_STATEMENT_COLLECTION not in _db.list_collection_names():
-        coll = _db[MONGO_QUARTER_STATEMENT_COLLECTION]
-        coll.create_index(
-            [
-                ("username", 1),
-                ("stockcode", 1),
-                ("statementtype", 1),
-                ("quarter", 1),
-                ("fieldname", 1),
-            ],
-            unique=True
-        )
-
-
 def update(statement_row: QuarterStatementRow):
-    coll = quarter_statments_collection()
+    coll = statments_collection()
     res = coll.update_one(
         {
             "username": statement_row.username,
@@ -55,7 +45,9 @@ def update(statement_row: QuarterStatementRow):
             "quarter": statement_row.quarter,
             "fieldname": statement_row.fieldname,
         },
-        update=statement_row.model_dump(),
+        {
+            "$set": statement_row.model_dump()
+        },
         upsert=True
     )
 
@@ -63,7 +55,7 @@ def update(statement_row: QuarterStatementRow):
 
 
 def get(username, stockcode, statementtype, quarter, fieldname) -> QuarterStatementRow:
-    coll = quarter_statments_collection()
+    coll = statments_collection()
     res = coll.find_one(
         {
             "username": username,
