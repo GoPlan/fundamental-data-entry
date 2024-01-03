@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from statement.app import app as statement_app
+
 origins = [
     "http://localhost:3000",
     "http://react:3000",
@@ -15,10 +17,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/statement", statement_app)
+
+
 @app.get("/")
 async def root():
     return "App is up!"
-
 
 # import uvicorn
 
