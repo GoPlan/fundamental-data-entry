@@ -1,7 +1,7 @@
 import Form from 'react-bootstrap/Form'
 import StatementField from "./StatementField";
 
-export default function IncomeForm() {
+export default function StatementForm() {
     // const [Revenue, setRevenue] = useState();
     // const [RevenueDeduction, setRevenueDeduction] = useState();
     // const [NetRevenue, setNetRevenue] = useState();
@@ -27,9 +27,7 @@ export default function IncomeForm() {
 
     return (
         <Form>
-            <StatementField fieldname="Revenue"/>
-            <StatementField fieldname="RevenueDeduction"/>
-            <StatementField fieldname="NetRevenue"/>
+            <StatementField id="NetRevenue" username="user00" fieldname="NetRevenue"/>
         </Form>
     )
 }

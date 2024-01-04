@@ -56,16 +56,17 @@ def update(statement_row: QuarterStatementRow):
 
 def get(username, stockcode, statementtype, quarter, fieldname) -> QuarterStatementRow:
     coll = statments_collection()
-    res = coll.find_one(
-        {
-            "username": username,
-            "stockcode": stockcode,
-            "statementtype": statementtype,
-            "quarter": quarter,
-            "fieldname": fieldname
-        }
-    )
 
-    doc = QuarterStatementRow(**res)
+    ident = {
+        "username": username,
+        "stockcode": stockcode,
+        "statementtype": statementtype,
+        "quarter": quarter,
+        "fieldname": fieldname
+    }
+
+    res = coll.find_one(ident)
+
+    doc = QuarterStatementRow(**res) if res else QuarterStatementRow(**ident)
 
     return doc
