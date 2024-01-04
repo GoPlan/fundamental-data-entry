@@ -1,0 +1,46 @@
+version: '3'
+services:
+
+  #  db:
+  #    image: postgres:15
+  #    restart: always
+  #    environment:
+  #      POSTGRES_USER: example
+  #      POSTGRES_PASSWORD: example
+  #      POSTGRES_DB: financialstatements
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+    ports:
+      - ${MONGO_FORWARDED_PORT}:${MONGO_PORT}
+    volumes:
+      - ./mongo/.data:/data/db
+      - ./mongo/init.js:/docker-entrypoint-initdb.d/init.js
+
+  fastapi:
+    image: goplan/fastapi:python3.10
+    build:
+      context: ../../../fastapi
+      dockerfile: Dockerfile
+    expose:
+      - ${FASTAPI_PORT}
+    ports:
+      - ${FASTAPI_PORT}:${FASTAPI_PORT}
+    environment:
+      PORT: ${FASTAPI_PORT}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB: ${MONGO_DB}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+    volumes:
+      - ./fastapi/app:/app
+    command: [ "/start-reload.sh" ]
+    restart: unless-stopped
