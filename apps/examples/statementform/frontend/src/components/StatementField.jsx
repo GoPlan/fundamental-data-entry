@@ -2,18 +2,13 @@ import {useState, useEffect} from "react";
 import Form from "react-bootstrap/Form";
 
 
-function StatementField({fieldname}) {
+function StatementField({username, stockcode, statementtype, quarter, fieldname}) {
     const [fieldValue, setFieldValue] = useState();
     const [firstRun, setFirstRun] = useState(true)
 
-    const username = "user00"
-    const stockcode = 'PVT'
-    const statementtype = 'Income'
-    const quarter = '2023Q3'
-
     function getField(username, stockcode, statementtype, quarter, fieldname) {
         const get_url = (
-            `http://localhost:8005/statement/get/${username}/${stockcode}/${statementtype}/${quarter}/${fieldname}`
+            `http://localhost:8005/statement/field/get/${username}/${stockcode}/${statementtype}/${quarter}/${fieldname}`
         )
 
         fetch(get_url)
@@ -27,7 +22,7 @@ function StatementField({fieldname}) {
 
     function saveField(username, stockcode, statementtype, quarter, fieldname, fieldvalue) {
         const update_url = (
-            `http://localhost:8005/statement/update`
+            `http://localhost:8005/statement/field/update`
         )
         fetch(update_url, {
             method: "POST",
@@ -63,7 +58,7 @@ function StatementField({fieldname}) {
     return (
         <Form.Group id={fieldname} className="mb-2" controlId="{fieldname}">
             <Form.Label>{fieldname}</Form.Label>
-            <Form.Control type="text" value={fieldValue} onChange={fieldValueHandler}/>
+            <Form.Control type="text" defaultValue={fieldValue} onChange={fieldValueHandler}/>
         </Form.Group>
     )
 }

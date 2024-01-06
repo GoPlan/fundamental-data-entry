@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from statement.app import app as statement_app
+from statementform.app import app as statement_app
 
 origins = [
     "http://localhost:3000",

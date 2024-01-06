@@ -63,7 +63,7 @@ function StatementField({fieldname}) {
     return (
         <Form.Group id={fieldname} className="mb-2" controlId="{fieldname}">
             <Form.Label>{fieldname}</Form.Label>
-            <Form.Control type="text" value={fieldValue} onChange={fieldValueHandler}/>
+            <Form.Control type="text" defaultValue={fieldValue} onChange={fieldValueHandler}/>
         </Form.Group>
     )
 }

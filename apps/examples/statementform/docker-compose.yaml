@@ -1,14 +1,6 @@
 version: '3'
 services:
 
-  #  db:
-  #    image: postgres:15
-  #    restart: always
-  #    environment:
-  #      POSTGRES_USER: example
-  #      POSTGRES_PASSWORD: example
-  #      POSTGRES_DB: financialstatements
-
   mongo:
     image: mongo
     restart: unless-stopped
@@ -16,12 +8,13 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB}
-      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
+      MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
     ports:
       - ${MONGO_FORWARDED_PORT}:${MONGO_PORT}
     volumes:
       - ./mongo/.data:/data/db
-      - ./mongo/init.js:/docker-entrypoint-initdb.d/init.js
+      - ./mongo/statements.js:/docker-entrypoint-initdb.d/statements.js
 
   fastapi:
     image: goplan/fastapi:python3.10
@@ -39,7 +32,8 @@ services:
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DB: ${MONGO_DB}
-      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
+      MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
     volumes:
       - ./fastapi/app:/app
     command: [ "/start-reload.sh" ]

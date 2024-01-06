@@ -2,32 +2,47 @@ import Form from 'react-bootstrap/Form'
 import StatementField from "./StatementField";
 
 export default function StatementForm() {
-    // const [Revenue, setRevenue] = useState();
-    // const [RevenueDeduction, setRevenueDeduction] = useState();
-    // const [NetRevenue, setNetRevenue] = useState();
-    // const [COGS, setCOGS] = useState();
-    // const [GrossProfit, setGrossProfit] = useState();
-    // const [FinancialIncome, setFinancialIncome] = useState();
-    // const [FinancialExpense, setFinancialExpense] = useState();
-    // const [InterestExpense, setInterestExpense] = useState();
-    // const [AssociateAndJointVenture, setAssociateAndJointVenture] = useState();
-    // const [SellingExpense, setSellingExpense] = useState();
-    // const [GeneralAndAdministrativeExpense, setGeneralAndAdministrativeExpense] = useState();
-    // const [OperatingProfit, setOperatingProfit] = useState();
-    // const [OtherIncome, setOtherIncome] = useState();
-    // const [OtherExpense, setOtherExpense] = useState();
-    // const [OtherProfit, setOtherProfit] = useState();
-    // const [ProfitBeforeTax, setProfitBeforeTax] = useState();
-    // const [CurrentTaxExpense, setCurrentTaxExpense] = useState();
-    // const [DeferredTaxExpense, setDeferredTaxExpense] = useState();
-    // const [ProfitAfterTax, setProfitAfterTax] = useState();
-    // const [ProfitAfterTaxForMinorityInterest, setProfitAfterTaxForMinorityInterest] = useState();
-    // const [ProfitAfterTaxForShareholdersOfParentCompany, setProfitAfterTaxForShareholdersOfParentCompany] = useState();
 
+    const username = "user00"
+    const stockcode = "PVT"
+    const statementtype = "Income"
+    const quarter = "2023Q4"
+
+    const fields = [
+        // "Revenue",
+        // "RevenueDeduction",
+        "NetRevenue",
+        "COGS",
+        "GrossProfit",
+        // "FinancialIncome",
+        // "FinancialExpense",
+        // "InterestExpense",
+        // "AssociateAndJointVenture",
+        // "SellingExpense",
+        // "GeneralAndAdministrativeExpense",
+        // "OperatingProfit",
+        // "OtherIncome",
+        // "OtherExpense",
+        // "OtherProfit",
+        // "ProfitBeforeTax",
+        // "CurrentTaxExpense",
+        // "DeferredTaxExpense",
+        // "ProfitAfterTax",
+        // "ProfitAfterTaxForMinorityInterest",
+        // "ProfitAfterTaxForShareholdersOfParentCompany"
+    ]
 
     return (
         <Form>
-            <StatementField id="NetRevenue" username="user00" fieldname="NetRevenue"/>
+            {
+                fields.map(fieldname => <StatementField key={fieldname}
+                                                        username={username}
+                                                        stockcode={stockcode}
+                                                        statementtype={statementtype}
+                                                        quarter={quarter}
+                                                        fieldname={fieldname}/>)
+            }
+
         </Form>
     )
 }
