@@ -1,0 +1,2 @@
+GET http://localhost:8005/statement/get/user00/PVT/income/2023Q4/netrevenue
+Accept: application/json
