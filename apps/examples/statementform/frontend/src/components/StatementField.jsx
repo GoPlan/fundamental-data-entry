@@ -1,30 +1,28 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import Form from "react-bootstrap/Form";
+import {AppContext, StatementContext} from "./AppContext";
 
+function StatementField({fieldname}) {
 
-function StatementField({username, stockcode, statementtype, quarter, fieldname}) {
+    const appCtx = useContext(AppContext)
+    const statementCtx = useContext(StatementContext)
+
     const [fieldValue, setFieldValue] = useState();
     const [firstRun, setFirstRun] = useState(true)
 
-    function getField(username, stockcode, statementtype, quarter, fieldname) {
-        const get_url = (
-            `http://localhost:8005/statement/field/get/${username}/${stockcode}/${statementtype}/${quarter}/${fieldname}`
-        )
-
-        fetch(get_url)
+    function getField(getURL, username, stockcode, statementtype, quarter, fieldname) {
+        const url = `${getURL}/${username}/${stockcode}/${statementtype}/${quarter}/${fieldname}`
+        fetch(url)
             .then(result => result.json())
             .then(doc => {
-                // if ("value" in doc)
-                const value = doc["value"] ? doc["value"] : undefined
-                setFieldValue(value)
+                setFieldValue(doc["value"] ? doc["value"] : undefined)
             })
     }
 
-    function saveField(username, stockcode, statementtype, quarter, fieldname, fieldvalue) {
-        const update_url = (
-            `http://localhost:8005/statement/field/update`
-        )
-        fetch(update_url, {
+    function saveField(updateURL, username, stockcode, statementtype, quarter, fieldname, fieldvalue) {
+        const url = updateURL
+
+        fetch(updateURL, {
             method: "POST",
             body: JSON.stringify(
                 {
@@ -44,21 +42,30 @@ function StatementField({username, stockcode, statementtype, quarter, fieldname}
 
 
     useEffect(() => {
-        if (firstRun) {
-            getField(username, stockcode, statementtype, quarter, fieldname)
-            setFirstRun(false)
-        } else
-            saveField(username, stockcode, statementtype, quarter, fieldname, fieldValue)
-    }, [fieldValue]);
+        const getURL = appCtx.statementField.getURL
+        const updateURL = appCtx.statementField.updateURL
+        const username = appCtx.username
+        const stockcode = statementCtx.stockcode
+        const statementtype = statementCtx.statementtype
+        const quarter = statementCtx.quarter
 
-    const fieldValueHandler = (e) => {
+        if (firstRun) {
+            getField(getURL, username, stockcode, statementtype, quarter, fieldname)
+            setFirstRun(false)
+        } else {
+            saveField(updateURL, username, stockcode, statementtype, quarter, fieldname, fieldValue)
+        }
+
+    }, [fieldValue, statementCtx]);
+
+    const fieldValueHandle = (e) => {
         setFieldValue(e.target.value)
     }
 
     return (
         <Form.Group id={fieldname} className="mb-2" controlId="{fieldname}">
             <Form.Label>{fieldname}</Form.Label>
-            <Form.Control type="text" defaultValue={fieldValue} onChange={fieldValueHandler}/>
+            <Form.Control type="text" defaultValue={fieldValue} onChange={fieldValueHandle}/>
         </Form.Group>
     )
 }

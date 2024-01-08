@@ -1,12 +1,22 @@
 import Form from 'react-bootstrap/Form'
 import StatementField from "./StatementField";
+import {AppContext, StatementContext} from "./AppContext";
 
 export default function StatementForm() {
 
-    const username = "user00"
-    const stockcode = "PVT"
-    const statementtype = "Income"
-    const quarter = "2023Q4"
+    const appCtx = {
+        username: "user00",
+        statementField: {
+            getURL: "http://localhost:8005/statement/field/get",
+            updateURL: "http://localhost:8005/statement/field/update"
+        }
+    }
+
+    const statementCtx = {
+        stockcode: "PVT",
+        statementtype: "Income",
+        quarter: "2023Q4",
+    }
 
     const fields = [
         // "Revenue",
@@ -33,16 +43,15 @@ export default function StatementForm() {
     ]
 
     return (
-        <Form>
-            {
-                fields.map(fieldname => <StatementField key={fieldname}
-                                                        username={username}
-                                                        stockcode={stockcode}
-                                                        statementtype={statementtype}
-                                                        quarter={quarter}
-                                                        fieldname={fieldname}/>)
-            }
-
-        </Form>
+        <AppContext.Provider value={appCtx}>
+            <Form>
+                <StatementContext.Provider value={statementCtx}>
+                    {
+                        fields.map(fieldname => <StatementField key={fieldname}
+                                                                fieldname={fieldname}/>)
+                    }
+                </StatementContext.Provider>
+            </Form>
+        </AppContext.Provider>
     )
 }
