@@ -4,12 +4,18 @@ from typing import Union, List
 from datetime import datetime
 
 
+class StatementField(BaseModel):
+    fieldname: str
+    value: Union[float, None] = None
+
+
 class Statement(BaseModel):
     username: str
     stockcode: str
     statementtype: str
     quarter: str
-    releasedate: datetime
+    releasedate: Union[datetime, None] = None
+    statementfields: List[StatementField] = None
 
 
 class StatementList(RootModel):
@@ -20,7 +26,7 @@ class StatementList(RootModel):
             self.root.append(statement)
 
 
-class StatementField(BaseModel):
+class StatementFieldUpdate(BaseModel):
     username: str
     stockcode: str
     statementtype: str

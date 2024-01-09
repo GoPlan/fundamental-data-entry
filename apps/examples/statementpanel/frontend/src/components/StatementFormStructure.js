@@ -1,8 +1,3 @@
-import Form from 'react-bootstrap/Form'
-import StatementField from "./StatementField";
-import {StatementContext} from "./AppContext";
-import {useContext} from "react";
-
 const StatementFormStructure = {
     Income: [
         // "Revenue",
@@ -31,18 +26,4 @@ const StatementFormStructure = {
     Cashflow: []
 }
 
-export default function StatementForm() {
-
-    const statementCtx = useContext(StatementContext)
-    const fields = StatementFormStructure[statementCtx.currentStatement.statementtype]
-
-    // console.log(statementCtx.currentStatement)
-
-    return (
-        <Form>
-            {
-                fields.map(fieldname => <StatementField key={fieldname} fieldname={fieldname}/>)
-            }
-        </Form>
-    )
-}
+export default StatementFormStructure
