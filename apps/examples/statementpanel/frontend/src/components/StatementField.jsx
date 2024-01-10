@@ -3,10 +3,10 @@ import Form from "react-bootstrap/Form";
 import {AppContext, StatementContext} from "./AppContext";
 
 
-function StatementField({statement, fieldName, fieldValue}) {
+function StatementField({fieldName, fieldValue}) {
 
     const fieldValueHandle = (e) => {
-        // console.log(e.target.value)
+        console.log(e.target.value)
     }
 
     return (

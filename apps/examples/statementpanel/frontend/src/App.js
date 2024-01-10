@@ -8,14 +8,14 @@ function App() {
     const appCtx = {
         username: "user00",
         statement: {
-            listURL: "http://localhost:8005/statement/list"
+            listURL: "http://localhost:8005/statement/list",
+            getURL: "http://localhost:8005/statement/get"
         },
         statementField: {
             getURL: "http://localhost:8005/statement/field/get",
             updateURL: "http://localhost:8005/statement/field/update"
         }
     }
-
 
     return (
         <AppContext.Provider value={appCtx}>

@@ -59,6 +59,8 @@ export default function LinePlot() {
         };
     }, [data])
 
+    console.log("APP!!!")
+
     return (
         <>
             <div ref={closeRef}/>

@@ -1,38 +1,33 @@
 import Form from 'react-bootstrap/Form'
 import StatementField from "./StatementField";
-import {AppContext, StatementContext} from "./AppContext";
-import {useContext, useEffect, useState} from "react";
-
 import StatementFormStructure from "./StatementFormStructure";
+import {useState} from "react";
 
-export default function StatementForm({statement}) {
+export default function StatementForm({statement, statementFields}) {
+    const [isEditing, setIsEditing] = useState(false)
+
     if (!statement)
-        return <></>
+        return <></>;
 
-    // const appCtx = useContext(AppContext)
-    const statementFields = StatementFormStructure[statement.statementtype]
-    const statementFieldsList = statement.statementfields
-    const statementFieldsData = {}
+    const fieldsName = StatementFormStructure[statement.statementtype]
 
-    statementFieldsList.map(el => {
-        statementFieldsData[el.fieldname] = el.value ? el.value : ""
-    })
-
-    return (
-        <>
-            <h1>
-                <p>{statement.stockcode}</p>
-            </h1>
-            <Form>
-                {
-                    statementFields.map(fieldName => {
-                        return <StatementField key={fieldName}
-                                               statement={statement}
-                                               fieldName={fieldName}
-                                               fieldValue={statementFieldsData[fieldName]}/>
-                    })
-                }
-            </Form>
-        </>
-    )
+    if (!isEditing) {
+        return (
+            <>
+                <h1>
+                    <p>{statement.stockcode}</p>
+                </h1>
+                <Form>
+                    {
+                        fieldsName.map(fieldName => {
+                            const fieldValue = statementFields[fieldName] ? statementFields[fieldName] : ""
+                            return <StatementField key={fieldName}
+                                                   fieldName={fieldName}
+                                                   fieldValue={fieldValue}/>
+                        })
+                    }
+                </Form>
+            </>
+        )
+    }
 }

@@ -24,6 +24,7 @@ export default function StatementForm() {
     // const [ProfitAfterTaxForMinorityInterest, setProfitAfterTaxForMinorityInterest] = useState();
     // const [ProfitAfterTaxForShareholdersOfParentCompany, setProfitAfterTaxForShareholdersOfParentCompany] = useState();
 
+    console.log("Form")
 
     return (
         <Form>
