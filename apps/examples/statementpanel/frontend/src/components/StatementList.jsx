@@ -1,6 +1,4 @@
-import {useContext} from "react";
 import {ListGroup} from "react-bootstrap";
-import {StatementContext} from "./AppContext";
 
 export default function StatementList({statementList, statement, setSelectstatement}) {
 

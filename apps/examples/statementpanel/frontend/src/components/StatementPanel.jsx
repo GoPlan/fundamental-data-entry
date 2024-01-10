@@ -1,10 +1,9 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 
 import StatementList from "./StatementList";
 import StatementForm from "./StatementForm";
 import {AppContext} from "./AppContext";
-import StatementFormStructure from "./StatementFormStructure";
 
 function fieldsList2Dict(fieldsList) {
     if (!fieldsList)

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Container, Row, Col} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 
 import StatementPanel from "./components/StatementPanel";
 import {AppContext} from "./components/AppContext";

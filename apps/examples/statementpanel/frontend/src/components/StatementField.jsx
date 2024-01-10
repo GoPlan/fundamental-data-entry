@@ -1,6 +1,4 @@
-import {useState, useEffect, useContext} from "react";
 import Form from "react-bootstrap/Form";
-import {AppContext, StatementContext} from "./AppContext";
 
 
 function StatementField({fieldName, fieldValue}) {
