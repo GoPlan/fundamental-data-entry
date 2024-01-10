@@ -47,10 +47,6 @@ export default function StatementPanel() {
         const quarter = selectStatement.quarter
         const fetchURL = `${getURL}/${username}/${stockcode}/${statementtype}/${quarter}`
 
-        console.log({
-            "statementList": statementList,
-        })
-
         fetch(fetchURL)
             .then(res => res.json())
             .then(doc => {
@@ -59,6 +55,8 @@ export default function StatementPanel() {
                 setSelectStatement(null)
             })
     }
+
+    console.log(statement)
 
     return (
         <Container>
