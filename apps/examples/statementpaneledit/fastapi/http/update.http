@@ -1,0 +1,14 @@
+### Send POST request with json body
+
+POST http://localhost:8005/statement/update
+Content-Type: application/json
+
+{
+  "username": "user00",
+  "stockcode": "PVT",
+  "statementtype": "income",
+  "quarter": "2023Q4",
+  "fieldname": "netrevenue",
+  "value": 15000
+}
+
