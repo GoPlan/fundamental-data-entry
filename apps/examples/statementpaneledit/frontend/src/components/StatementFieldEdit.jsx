@@ -2,6 +2,10 @@ import Form from "react-bootstrap/Form";
 import {useContext} from "react";
 import {AppContext} from "./AppContext";
 
+function value2number(unknownValue) {
+    const value = typeof unknownValue === "string" && unknownValue.length === 0 ? NaN : Number(unknownValue)
+    return isNaN(value) ? null : value
+}
 
 function StatementFieldEdit({field, statement}) {
 
@@ -11,7 +15,7 @@ function StatementFieldEdit({field, statement}) {
 
     const onChangeHandle = (e) => {
         const updateURL = appCtx.statementField.updateURL
-        const fieldNewValue = e.target.value
+        const fieldNewValue = value2number(e.target.value)
 
         fetch(updateURL, {
             method: "POST",
