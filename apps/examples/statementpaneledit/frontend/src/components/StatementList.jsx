@@ -5,7 +5,7 @@ function statementList2Map(statementList) {
     const statementMap = new Map()
 
     if (statementList) {
-        statementList.map(el => {
+        statementList.forEach(el => {
             statementMap.set(el.stockcode, el)
         })
     }
@@ -14,7 +14,7 @@ function statementList2Map(statementList) {
 
 }
 
-export default function StatementList({statementList, statement, setSelectstatement}) {
+export default function StatementList({editable, statementList, statement, setSelectstatement}) {
 
     const statementMap = statementList2Map(statementList)
 
@@ -23,21 +23,18 @@ export default function StatementList({statementList, statement, setSelectstatem
         setSelectstatement(selected)
     }
 
-    if (statementList) {
-        return (
-            <ListGroup>
-                {
-                    statementList.map(item => (
-                            <ListGroup.Item action
-                                            active={statement && item.stockcode === statement.stockcode ? statement : false}
-                                            onClick={stockClickHandle}
-                                            key={item.stockcode}>{item.stockcode}</ListGroup.Item>
-                        )
+    return (
+        <ListGroup>
+            {
+                statementList.map(item => (
+                        <ListGroup.Item action
+                                        disabled={editable.isEditing}
+                                        active={statement && item.stockcode === statement.stockcode}
+                                        onClick={stockClickHandle}
+                                        key={item.stockcode}>{item.stockcode}</ListGroup.Item>
                     )
-                }
-            </ListGroup>
-        )
-    } else {
-        return <></>
-    }
+                )
+            }
+        </ListGroup>
+    )
 }

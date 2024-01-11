@@ -1,7 +1,10 @@
 import Form from "react-bootstrap/Form";
 
 
-function StatementField({fieldName, fieldValue}) {
+function StatementField({field}) {
+
+    const fieldName = field.fieldName;
+    const fieldValue = field.fieldValue ?? ""
 
     return (
         <Form.Group id={fieldName} className="mb-2" controlId={fieldName}>

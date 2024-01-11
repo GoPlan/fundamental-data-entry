@@ -1,22 +1,36 @@
-import {useState} from "react";
 import {Col, Container, Row, Button} from "react-bootstrap";
 import Form from 'react-bootstrap/Form'
 import StatementField from "./StatementField";
 import StatementFieldEdit from "./StatementFieldEdit";
 import StatementFormStructure from "./StatementFormStructure";
 
-export default function StatementForm({statement, statementFields}) {
-    const [isEditing, setIsEditing] = useState(false)
+function fieldsList2Map(fieldsList) {
 
-    if (!statement) return <></>;
+    const fieldsDict = {}
 
-    const fieldsName = StatementFormStructure[statement.statementtype]
+    fieldsList.forEach(item => {
+        fieldsDict[item.fieldname] = item.value
+    })
 
-    const editClickHandle = (e) => {
-        setIsEditing(editable => !editable)
+    return fieldsDict
+}
+
+export default function StatementForm({editable, statement, setSelectstatement}) {
+
+    const fieldsName = statement ? StatementFormStructure[statement.statementtype] : []
+    const fieldsValueMap = statement ? fieldsList2Map(statement.statementfields) : {}
+
+    const editClickHandle = () => {
+        editable.setIsEditing(editable => !editable)
+        setSelectstatement({
+            username: statement.username,
+            stockcode: statement.stockcode,
+            statementtype: statement.statementtype,
+            quarter: statement.quarter
+        })
     }
 
-    if (!isEditing) {
+    if (statement && !editable.isEditing) {
         return (
             <Container>
                 <Row>
@@ -30,18 +44,19 @@ export default function StatementForm({statement, statementFields}) {
                 <Row>
                     <Col>
                         <Form>
-                            {fieldsName.map(fieldName => {
-                                const fieldValue = statementFields[fieldName] ? statementFields[fieldName] : ""
-                                return <StatementField key={fieldName}
-                                                       fieldName={fieldName}
-                                                       fieldValue={fieldValue}/>
-                            })}
+                            {
+                                fieldsName.map(fieldName => {
+                                    const fieldValue = fieldsValueMap[fieldName]
+                                    return <StatementField key={fieldName}
+                                                           field={{fieldName, fieldValue}}/>
+                                })
+                            }
                         </Form>
                     </Col>
                 </Row>
             </Container>
         )
-    } else {
+    } else if (statement && editable.isEditing) {
         return (
             <Container>
                 <Row>
@@ -55,16 +70,21 @@ export default function StatementForm({statement, statementFields}) {
                 <Row>
                     <Col>
                         <Form>
-                            {fieldsName.map(fieldName => {
-                                const fieldValue = statementFields[fieldName] ? statementFields[fieldName] : ""
-                                return <StatementFieldEdit key={fieldName}
-                                                           fieldName={fieldName}
-                                                           fieldValue={fieldValue}/>
-                            })}
+                            {
+                                fieldsName.map(fieldName => {
+                                    const fieldValue = fieldsValueMap[fieldName]
+                                    return <StatementFieldEdit key={fieldName}
+                                                               field={{fieldName, fieldValue}}
+                                                               statement={statement}/>
+                                })
+                            }
                         </Form>
                     </Col>
                 </Row>
             </Container>
         )
+    } else {
+        // statement is Null (No selected statement)
+        return <></>
     }
 }

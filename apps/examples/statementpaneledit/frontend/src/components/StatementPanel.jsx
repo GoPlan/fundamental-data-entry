@@ -5,27 +5,15 @@ import StatementList from "./StatementList";
 import StatementForm from "./StatementForm";
 import {AppContext} from "./AppContext";
 
-function fieldsList2Dict(fieldsList) {
-    if (!fieldsList)
-        return {};
-
-    const fieldsDict = {}
-
-    fieldsList.map(el => {
-        fieldsDict[el.fieldname] = el.value
-    })
-
-    return fieldsDict
-}
 
 export default function StatementPanel() {
 
     const appCtx = useContext(AppContext)
 
-    const [statementList, setStatementList] = useState(null)
+    const [statementList, setStatementList] = useState([])
     const [statement, setStatement] = useState(null)
     const [selectStatement, setSelectStatement] = useState(null)
-    const [statementFields, setStatementFields] = useState(null)
+    const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
         const listURL = appCtx.statement.listURL
@@ -36,7 +24,7 @@ export default function StatementPanel() {
             .then(docs => {
                 setStatementList(docs)
             })
-    }, []);
+    }, [appCtx]);
 
 
     if (selectStatement) {
@@ -51,7 +39,6 @@ export default function StatementPanel() {
             .then(res => res.json())
             .then(doc => {
                 setStatement(doc)
-                setStatementFields(fieldsList2Dict(doc.statementfields))
                 setSelectStatement(null)
             })
     }
@@ -61,10 +48,13 @@ export default function StatementPanel() {
     return (
         <Container>
             <Row>
-                <Col><StatementList statementList={statementList}
+                <Col><StatementList editable={{isEditing, setIsEditing}}
+                                    statementList={statementList}
                                     statement={statement}
                                     setSelectstatement={setSelectStatement}/></Col>
-                <Col><StatementForm statement={statement} statementFields={statementFields}/></Col>
+                <Col><StatementForm editable={{isEditing, setIsEditing}}
+                                    statement={statement}
+                                    setSelectstatement={setSelectStatement}/></Col>
             </Row>
         </Container>
     )

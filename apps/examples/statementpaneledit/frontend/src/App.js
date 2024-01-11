@@ -3,6 +3,7 @@ import {Col, Container, Row} from "react-bootstrap";
 
 import StatementPanel from "./components/StatementPanel";
 import {AppContext} from "./components/AppContext";
+import {StrictMode} from "react";
 
 function App() {
     const appCtx = {
@@ -18,13 +19,15 @@ function App() {
     }
 
     return (
-        <AppContext.Provider value={appCtx}>
-            <Container>
-                <Row>
-                    <Col><StatementPanel/></Col>
-                </Row>
-            </Container>
-        </AppContext.Provider>
+        <StrictMode>
+            <AppContext.Provider value={appCtx}>
+                <Container>
+                    <Row>
+                        <Col><StatementPanel/></Col>
+                    </Row>
+                </Container>
+            </AppContext.Provider>
+        </StrictMode>
     )
 }
 
