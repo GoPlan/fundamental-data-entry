@@ -13,6 +13,22 @@ db.statements.createIndex(
         unique: true
     }
 )
+db.statements.updateOne(
+    {
+        username: "user00",
+        stockcode: "PVT",
+        statementtype: "Income",
+        quarter: "2023Q4",
+    },
+    {
+        "$set": {
+            releasedate: ISODate("2023-10-01")
+        }
+    },
+    {
+        upsert: true
+    }
+)
 
 db.createCollection(statementfields_coll)
 db.statementfields.createIndex(

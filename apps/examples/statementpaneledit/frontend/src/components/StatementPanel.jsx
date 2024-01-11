@@ -43,7 +43,7 @@ export default function StatementPanel() {
             })
     }
 
-    console.log(statement)
+    // console.log(statement)
 
     return (
         <Container>
