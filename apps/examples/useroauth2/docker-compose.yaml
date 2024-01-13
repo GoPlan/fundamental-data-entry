@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+#  mongo:
+#    image: mongo
+#    restart: unless-stopped
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+#      MONGO_INITDB_DATABASE: ${MONGO_DB}
+#      MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
+#      MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
+#    ports:
+#      - ${MONGO_FORWARDED_PORT}:${MONGO_PORT}
+#    volumes:
+#      - ./mongo/.data:/data/db
+#      - ./mongo/statements.js:/docker-entrypoint-initdb.d/statements.js
+
+  fastapi:
+    image: goplan/fastapi:python3.10
+    build:
+      context: ../../../fastapi
+      dockerfile: Dockerfile
+    expose:
+      - ${FASTAPI_PORT}
+    ports:
+      - ${FASTAPI_PORT}:${FASTAPI_PORT}
+    environment:
+      PORT: ${FASTAPI_PORT}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB: ${MONGO_DB}
+    volumes:
+      - ./fastapi/app:/app
+    command: [ "/start-reload.sh" ]
+    restart: unless-stopped
