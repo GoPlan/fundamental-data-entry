@@ -1,20 +1,18 @@
 from datetime import datetime, timedelta, timezone
-from typing import Annotated, Union
+from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 from pydantic import BaseModel
+from passlib.context import CryptContext
 
-from db import get_user, verify_password, fake_users_db
+from jwt import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+from mongo import users_collection
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
-
-# to get a string like this run:
-# openssl rand -hex 32
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 class Token(BaseModel):
@@ -22,9 +20,35 @@ class Token(BaseModel):
     token_type: str
 
 
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
-    authenticated_user = user if user and verify_password(password, user.hashed_password) else None
+class User(BaseModel):
+    username: str
+    password_hash: str
+
+
+def get_user(username) -> User:
+    coll = users_collection()
+    doc = coll.find_one(
+        {
+            "username": username
+        },
+        {
+            "username": 1,
+            "password_hash": 1
+        }
+    )
+
+    user = User(**doc) if doc else None
+
+    return user
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def authenticate_user(username: str, password: str):
+    user = get_user(username)
+    authenticated_user = user if user and verify_password(password, user.password_hash) else None
     return authenticated_user
 
 
@@ -38,7 +62,7 @@ def create_access_token(data: dict, expires_delta: timedelta = 15):
 
 @app.post("/token")
 async def signin(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
+    user = authenticate_user(form_data.username, form_data.password)
 
     if user is None:
         raise HTTPException(

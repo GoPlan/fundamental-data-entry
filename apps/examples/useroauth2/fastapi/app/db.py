@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Annotated, Union
+from typing import Union
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

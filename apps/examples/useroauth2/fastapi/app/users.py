@@ -4,14 +4,16 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
-from db import get_user, fake_users_db
+from jwt import SECRET_KEY, ALGORITHM
+from mongo import users_collection
+from passlib.context import CryptContext
 
 app = FastAPI()
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/oauth2/token")
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
+USER00_DEFAULT_PLAIN_PASSWORD = "demo"
 
 
 class TokenData(BaseModel):
@@ -21,8 +23,42 @@ class TokenData(BaseModel):
 class User(BaseModel):
     username: str
     email: Union[str, None] = None
-    full_name: Union[str, None] = None
+    planet: Union[str, None] = None
     disabled: Union[bool, None] = None
+
+
+def get_user(username):
+    coll = users_collection()
+    doc = coll.find_one(
+        {
+            "username": username
+        },
+        {
+            "username": 1,
+            "email": 1,
+            "planet": 1,
+            "disabled": 1
+        }
+    )
+
+    user = User(**doc) if doc else None
+
+    return user
+
+
+def update_user00_hash(password_hash):
+    coll = users_collection()
+    res = coll.update_one(
+        {
+            "username": "user00"
+        },
+        {
+            "$set": {
+                "password_hash": password_hash
+            }
+        })
+
+    return res
 
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
@@ -44,7 +80,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     except JWTError:
         raise credentials_exception
 
-    user = get_user(fake_users_db, username=token_data.username)
+    user = get_user(username=token_data.username)
 
     if user is None:
         raise credentials_exception
@@ -59,11 +95,18 @@ async def get_current_active_user(current_user: Annotated[User, Depends(get_curr
     return current_user
 
 
-@app.get("/users/me/", response_model=User)
+@app.get("/user00/updatehash")
+async def user00_update_hash():
+    password_hash = pwd_context.hash(USER00_DEFAULT_PLAIN_PASSWORD)
+    res = update_user00_hash(password_hash)
+    return f"user00 'demo' password has been hashed - {res.acknowledged}"
+
+
+@app.get("/me/", response_model=User)
 async def read_users_me(current_user: Annotated[User, Depends(get_current_active_user)]):
     return current_user
 
 
-@app.get("/users/me/items/")
+@app.get("/me/items/")
 async def read_own_items(current_user: Annotated[User, Depends(get_current_active_user)]):
     return [{"item_id": "Foo", "owner": current_user.username}]
