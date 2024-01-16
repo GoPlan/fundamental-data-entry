@@ -1,8 +1,7 @@
 statements_coll = process.env["MONGO_STATEMENTS_COLLECTION"]
 statementfields_coll = process.env["MONGO_STATEMENTFIELDS_COLLECTION"]
 
-db.createCollection(statements_coll)
-db.statements.createIndex(
+db[statements_coll].createIndex(
     {
         username: 1,
         stockcode: 1,
@@ -13,7 +12,8 @@ db.statements.createIndex(
         unique: true
     }
 )
-db.statements.updateOne(
+
+db[statements_coll].updateOne(
     {
         username: "user00",
         stockcode: "PVT",
@@ -30,8 +30,7 @@ db.statements.updateOne(
     }
 )
 
-db.createCollection(statementfields_coll)
-db.statementfields.createIndex(
+db[statementfields_coll].createIndex(
     {
         username: 1,
         stockcode: 1,

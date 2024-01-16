@@ -4,3 +4,4 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 COPY ./app /app
+RUN echo SECRET_KEY=$(openssl rand -hex 32) > /etc/environment

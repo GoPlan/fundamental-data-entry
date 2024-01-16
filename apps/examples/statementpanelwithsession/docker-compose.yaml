@@ -10,11 +10,13 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DB}
       MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
       MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
+      MONGO_USERS_COLLECTION: ${MONGO_USERS_COLLECTION}
     ports:
       - ${MONGO_FORWARDED_PORT}:${MONGO_PORT}
     volumes:
       - ./mongo/.data:/data/db
       - ./mongo/statements.js:/docker-entrypoint-initdb.d/statements.js
+      - ./mongo/users.js:/docker-entrypoint-initdb.d/users.js
 
   fastapi:
     image: goplan/fastapi:python3.10
@@ -34,6 +36,7 @@ services:
       MONGO_DB: ${MONGO_DB}
       MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
       MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
+      MONGO_USERS_COLLECTION: ${MONGO_USERS_COLLECTION}
     volumes:
       - ./fastapi/app:/app
     command: [ "/start-reload.sh" ]
