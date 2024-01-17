@@ -15,13 +15,13 @@ function StatementFieldEdit({field, statement}) {
 
     const onChangeHandle = (e) => {
         const updateURL = appCtx.statementField.updateURL
+        const authorizationBearer = `Bearer ${appCtx.jwt.token.access_token}`
         const fieldNewValue = value2number(e.target.value)
 
         fetch(updateURL, {
             method: "POST",
             body: JSON.stringify(
                 {
-                    username: statement.username,
                     stockcode: statement.stockcode,
                     statementtype: statement.statementtype,
                     quarter: statement.quarter,
@@ -30,7 +30,8 @@ function StatementFieldEdit({field, statement}) {
                 }
             ),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": authorizationBearer
             }
         })
             .then(res => console.log(res))

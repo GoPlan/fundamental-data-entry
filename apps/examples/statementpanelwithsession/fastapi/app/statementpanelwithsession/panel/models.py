@@ -10,7 +10,7 @@ class StatementField(BaseModel):
 
 
 class Statement(BaseModel):
-    username: str
+    # username: str
     stockcode: str
     statementtype: str
     quarter: str
@@ -27,7 +27,7 @@ class StatementList(RootModel):
 
 
 class StatementFieldUpdate(BaseModel):
-    username: str
+    # username: str
     stockcode: str
     statementtype: str
     quarter: str

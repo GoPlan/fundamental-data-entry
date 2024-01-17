@@ -24,6 +24,7 @@ async def get_statement(stockcode: str,
 
 
 @app.post("/field/update")
-async def update_field(field: models.StatementFieldUpdate):
-    res = query.StatementField.update(field)
+async def update_field(field: models.StatementFieldUpdate,
+                       current_user: Annotated[User, Depends(get_current_active_user)]):
+    res = query.StatementField.update(current_user.username, field)
     return res.acknowledged

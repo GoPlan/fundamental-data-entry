@@ -17,9 +17,14 @@ export default function StatementPanel() {
 
     useEffect(() => {
         const listURL = appCtx.statement.listURL
-        const username = appCtx.username
+        const authorizationBearer = `Bearer ${appCtx.jwt.token.access_token}`
 
-        fetch(`${listURL}/${username}`)
+        fetch(listURL, {
+            headers: {
+                Accept: "application/json",
+                Authorization: authorizationBearer
+            }
+        })
             .then(result => result.json())
             .then(docs => {
                 setStatementList(docs)
@@ -29,13 +34,19 @@ export default function StatementPanel() {
 
     if (selectStatement) {
         const getURL = appCtx.statement.getURL
-        const username = selectStatement.username
         const stockcode = selectStatement.stockcode
         const statementtype = selectStatement.statementtype
         const quarter = selectStatement.quarter
-        const fetchURL = `${getURL}/${username}/${stockcode}/${statementtype}/${quarter}`
 
-        fetch(fetchURL)
+        const fetchURL = `${getURL}/${stockcode}/${statementtype}/${quarter}`
+        const authorizationBearer = `Bearer ${appCtx.jwt.token.access_token}`
+
+        fetch(fetchURL, {
+            headers: {
+                Accept: "application/json",
+                Authorization: authorizationBearer
+            }
+        })
             .then(res => res.json())
             .then(doc => {
                 setStatement(doc)

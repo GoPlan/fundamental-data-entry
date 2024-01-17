@@ -59,11 +59,11 @@ class Statement():
 
 class StatementField():
     @staticmethod
-    def update(field: models.StatementFieldUpdate):
+    def update(username, field: models.StatementFieldUpdate):
         coll = statementfields_collection()
         res = coll.update_one(
             {
-                "username": field.username,
+                "username": username,
                 "stockcode": field.stockcode,
                 "statementtype": field.statementtype,
                 "quarter": field.quarter,
