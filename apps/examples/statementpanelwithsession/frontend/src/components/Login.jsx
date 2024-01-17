@@ -24,7 +24,9 @@ export default function Login() {
         })
             .then(res => res.json())
             .then(doc => {
-                appCtx.jwt.setToken(doc)
+                if ("access_token" in doc) {
+                    appCtx.jwt.setToken(doc)
+                }
             })
             .catch(err => console.log(err))
     }
