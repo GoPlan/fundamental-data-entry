@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from financialstatements.app import app as statement_app
+from financialstatements.app import app as statements_app
 from usersauth.app import app as oauth2_app
-from user.app import app as users_app
+from user.app import app as user_app
 
 origins = [
     "http://localhost:3000"
@@ -25,8 +24,8 @@ async def root():
 
 
 app.mount("/oauth2", oauth2_app)
-app.mount("/user", users_app)
-app.mount("/statements", statement_app)
+app.mount("/user", user_app)
+app.mount("/statements", statements_app)
 
 # import uvicorn
 

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
 from typing import Annotated
-from usersauth.users import User, get_current_active_user
+
+from usersauth.user import User, get_current_active_user
 from . import query, models
 
 app = FastAPI()

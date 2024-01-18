@@ -46,21 +46,6 @@ def get_user(username):
     return user
 
 
-def update_user00_hash(password_hash):
-    coll = users_collection()
-    res = coll.update_one(
-        {
-            "username": "user00"
-        },
-        {
-            "$set": {
-                "password_hash": password_hash
-            }
-        })
-
-    return res
-
-
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

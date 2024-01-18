@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import {StrictMode, useState} from "react";
+import {Col, Container, Row} from "react-bootstrap";
+
+import StatementPanel from "./components/StatementPanel";
+import Login from "./components/Login"
+import {AppContext} from "./components/AppContext";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [token, setToken] = useState(null)
+
+    const appCtx = {
+        user: {
+            jwt: {
+                token,
+                setToken
+            },
+            tokenURL: "http://localhost:8005/oauth2/token"
+        },
+        statement: {
+            listURL: "http://localhost:8005/statements/list",
+            getURL: "http://localhost:8005/statements/get"
+        },
+        statementField: {
+            getURL: "http://localhost:8005/statements/field/get",
+            updateURL: "http://localhost:8005/statements/field/update"
+        }
+    }
+
+    // console.log(appCtx.jwt)
+
+    if (appCtx.user.jwt.token == null) {
+        return (
+            <StrictMode>
+                <AppContext.Provider value={appCtx}>
+                    <Container>
+                        <Row> <Col> <Login/> </Col> </Row>
+                    </Container>
+                </AppContext.Provider>
+            </StrictMode>
+        )
+    } else {
+        return (
+            <StrictMode>
+                <AppContext.Provider value={appCtx}>
+                    <Container>
+                        <Row> <Col> <StatementPanel/> </Col> </Row>
+                    </Container>
+                </AppContext.Provider>
+            </StrictMode>
+        )
+    }
 }
 
 export default App;
