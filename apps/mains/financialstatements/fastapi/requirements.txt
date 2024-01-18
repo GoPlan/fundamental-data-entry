@@ -1,0 +1,10 @@
+uvicorn[standard]==0.23.2
+gunicorn==21.2.0
+fastapi[all]==0.103.2
+pydantic==2.4.2
+pymongo==4.5
+pendulum==2.1.2
+python-jose[cryptography]
+passlib[bcrypt]
+numpy
+pandas

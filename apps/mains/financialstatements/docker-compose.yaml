@@ -2,42 +2,55 @@ version: '3'
 services:
 
   mongo:
-    image: mongo
+    image: mongo:7
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DB}
-      MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
-      MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
-      MONGO_USERS_COLLECTION: ${MONGO_USERS_COLLECTION}
+      MONGO_INITDB_ROOT_USERNAME: example
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: financialstatements
+      MONGO_STATEMENTS_COLLECTION: statements
+      MONGO_STATEMENTFIELDS_COLLECTION: statementfields
+      MONGO_USERS_COLLECTION: users
     ports:
-      - ${MONGO_FORWARDED_PORT}:${MONGO_PORT}
+      - 27020:27017
     volumes:
       - ./mongo/.data:/data/db
       - ./mongo/statements.js:/docker-entrypoint-initdb.d/statements.js
       - ./mongo/users.js:/docker-entrypoint-initdb.d/users.js
 
   fastapi:
-    image: goplan/fastapi:python3.10
+    image: goplan/fastapi-financialstatements:python3.10
     build:
-      context: ../../../fastapi
+      context: ./fastapi
       dockerfile: Dockerfile
-    expose:
-      - ${FASTAPI_PORT}
     ports:
-      - ${FASTAPI_PORT}:${FASTAPI_PORT}
+      - 8005:8000
+    env_file:
+      - .env.secret
     environment:
-      PORT: ${FASTAPI_PORT}
-      MONGO_HOST: ${MONGO_HOST}
-      MONGO_PORT: ${MONGO_PORT}
-      MONGO_USERNAME: ${MONGO_USERNAME}
-      MONGO_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_DB: ${MONGO_DB}
-      MONGO_STATEMENTS_COLLECTION: ${MONGO_STATEMENTS_COLLECTION}
-      MONGO_STATEMENTFIELDS_COLLECTION: ${MONGO_STATEMENTFIELDS_COLLECTION}
-      MONGO_USERS_COLLECTION: ${MONGO_USERS_COLLECTION}
+      PORT: 8000
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_USERNAME: example
+      MONGO_PASSWORD: example
+      MONGO_DB: financialstatements
+      MONGO_STATEMENTS_COLLECTION: statements
+      MONGO_STATEMENTFIELDS_COLLECTION: statementfields
+      MONGO_USERS_COLLECTION: users
     volumes:
       - ./fastapi/app:/app
     command: [ "/start-reload.sh" ]
     restart: unless-stopped
+
+#  node:
+#    image: node:20
+#    restart: unless-stopped
+#    user: "node"
+#    working_dir: /home/node/app
+#    environment:
+#      - NODE_ENV=development
+#    volumes:
+#      - ./frontend/:/home/node/app
+#    ports:
+#      - 3000:3000
+#    command: "npm start"
