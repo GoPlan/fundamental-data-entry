@@ -3,31 +3,50 @@ import Form from 'react-bootstrap/Form'
 import StatementField from "./StatementField";
 import StatementFieldEdit from "./StatementFieldEdit";
 import StatementFormStructure from "./StatementFormStructure";
+import {useCallback, useContext} from "react";
+import {AppContext} from "./AppContext";
 
-function fieldsList2Map(fieldsList) {
 
-    const fieldsDict = {}
-
-    fieldsList.forEach(item => {
-        fieldsDict[item.fieldname] = item.value
-    })
-
-    return fieldsDict
+function value2number(unknownValue) {
+    const value = typeof unknownValue === "string" && unknownValue.length === 0 ? NaN : Number(unknownValue)
+    return isNaN(value) ? null : value
 }
 
-export default function StatementForm({editable, statement, setSelectstatement}) {
+export default function StatementForm({editable, statement, reloadCurrentStatement}) {
 
+    const appCtx = useContext(AppContext)
     const fieldsName = statement ? StatementFormStructure[statement.statementtype] : []
-    const fieldsValueMap = statement ? fieldsList2Map(statement.statementfields) : {}
 
     const editClickHandle = () => {
         editable.setIsEditing(editable => !editable)
-        setSelectstatement({
-            stockcode: statement.stockcode,
-            statementtype: statement.statementtype,
-            quarter: statement.quarter
-        })
+        reloadCurrentStatement()
     }
+
+    const updateField = useCallback((fieldName) => {
+        return (fieldNewValue) => {
+            const updateURL = appCtx.statementField.updateURL
+            const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
+
+            fetch(updateURL, {
+                method: "POST",
+                body: JSON.stringify(
+                    {
+                        stockcode: statement.stockcode,
+                        statementtype: statement.statementtype,
+                        quarter: statement.quarter,
+                        fieldname: fieldName,
+                        value: value2number(fieldNewValue)
+                    }
+                ),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": authorizationBearer
+                }
+            })
+                .then(res => console.log(res))
+                .catch(err => console.error(err))
+        }
+    }, [statement, appCtx])
 
     if (statement && !editable.isEditing) {
         return (
@@ -45,7 +64,7 @@ export default function StatementForm({editable, statement, setSelectstatement})
                         <Form>
                             {
                                 fieldsName.map(fieldName => {
-                                    const fieldValue = fieldsValueMap[fieldName]
+                                    const fieldValue = statement.statementfields[fieldName]
                                     return <StatementField key={fieldName}
                                                            field={{fieldName, fieldValue}}/>
                                 })
@@ -71,10 +90,11 @@ export default function StatementForm({editable, statement, setSelectstatement})
                         <Form>
                             {
                                 fieldsName.map(fieldName => {
-                                    const fieldValue = fieldsValueMap[fieldName]
+                                    const fieldValue = statement.statementfields[fieldName]
                                     return <StatementFieldEdit key={fieldName}
-                                                               field={{fieldName, fieldValue}}
-                                                               statement={statement}/>
+                                                               fieldName={fieldName}
+                                                               fieldValue={fieldValue}
+                                                               callUpdateField={updateField(fieldName)}/>
                                 })
                             }
                         </Form>

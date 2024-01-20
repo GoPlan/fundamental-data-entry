@@ -1,35 +1,20 @@
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
-import {useContext, useRef} from "react";
-import {AppContext} from "./AppContext";
+import {useRef} from "react";
 
 
-export default function Login() {
+export default function Login({signIn}) {
 
-    const appCtx = useContext(AppContext)
     const usernameRef = useRef(null)
     const passwordRef = useRef(null)
 
     const formSubmitHandle = (e) => {
         e.preventDefault()
 
-        const tokenURL = appCtx.user.tokenURL
-        const formData = new FormData()
-        formData.append("username", usernameRef.current.value)
-        formData.append("password", passwordRef.current.value)
+        const username = usernameRef.current.value
+        const password = passwordRef.current.value
 
-
-        fetch(tokenURL, {
-            method: "POST",
-            body: formData
-        })
-            .then(res => res.json())
-            .then(doc => {
-                if ("access_token" in doc) {
-                    appCtx.user.jwt.setToken(doc)
-                }
-            })
-            .catch(err => console.log(err))
+        signIn(username, password)
     }
 
     return (

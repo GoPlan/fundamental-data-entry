@@ -1,23 +1,38 @@
-import {useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 
 import StatementList from "./StatementList";
 import StatementForm from "./StatementForm";
 import {AppContext} from "./AppContext";
 
+function fieldsListToMap(fieldsList) {
+
+    const fieldsDict = {}
+
+    fieldsList.forEach(item => {
+        fieldsDict[item.fieldname] = item.value
+    })
+
+    return fieldsDict
+}
+
+function docToStatement(statement) {
+    statement.statementfields = fieldsListToMap(statement.statementfields)
+    return statement
+}
 
 export default function StatementPanel() {
 
     const appCtx = useContext(AppContext)
+    const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
 
     const [statementList, setStatementList] = useState([])
     const [statement, setStatement] = useState(null)
-    const [selectStatement, setSelectStatement] = useState(null)
+    const [statementToSelect, setStatementToSelect] = useState(null)
     const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
         const listURL = appCtx.statement.listURL
-        const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
 
         fetch(listURL, {
             headers: {
@@ -31,15 +46,22 @@ export default function StatementPanel() {
             })
     }, [appCtx]);
 
+    const reloadCurrentStatement = useCallback(() => {
+        setStatementToSelect({
+            stockcode: statement.stockcode,
+            statementtype: statement.statementtype,
+            quarter: statement.quarter
+        })
+    }, [statement])
 
-    if (selectStatement) {
+
+    if (statementToSelect) {
         const getURL = appCtx.statement.getURL
-        const stockcode = selectStatement.stockcode
-        const statementtype = selectStatement.statementtype
-        const quarter = selectStatement.quarter
+        const stockcode = statementToSelect.stockcode
+        const statementtype = statementToSelect.statementtype
+        const quarter = statementToSelect.quarter
 
         const fetchURL = `${getURL}/${stockcode}/${statementtype}/${quarter}`
-        const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
 
         fetch(fetchURL, {
             headers: {
@@ -49,12 +71,11 @@ export default function StatementPanel() {
         })
             .then(res => res.json())
             .then(doc => {
-                setStatement(doc)
-                setSelectStatement(null)
+                setStatement(docToStatement(doc))
+                setStatementToSelect(null)
             })
-    }
 
-    // console.log(statement)
+    }
 
     return (
         <Container>
@@ -62,10 +83,10 @@ export default function StatementPanel() {
                 <Col><StatementList editable={{isEditing, setIsEditing}}
                                     statementList={statementList}
                                     statement={statement}
-                                    setSelectstatement={setSelectStatement}/></Col>
+                                    setSelectstatement={setStatementToSelect}/></Col>
                 <Col><StatementForm editable={{isEditing, setIsEditing}}
                                     statement={statement}
-                                    setSelectstatement={setSelectStatement}/></Col>
+                                    reloadCurrentStatement={reloadCurrentStatement}/></Col>
             </Row>
         </Container>
     )

@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {StrictMode, useState} from "react";
+import {StrictMode, useCallback, useState} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 
 import StatementPanel from "./components/StatementPanel";
@@ -10,13 +10,38 @@ function App() {
 
     const [token, setToken] = useState(null)
 
+    const signOut = useCallback(() => {
+        setToken(null)
+    }, [token])
+
+    const signIn = useCallback((username, password) => {
+
+        const tokenURL = "http://localhost:8005/oauth2/token"
+
+        const formData = new FormData()
+        formData.append("username", username)
+        formData.append("password", password)
+
+        fetch(tokenURL, {
+            method: "POST",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(doc => {
+                if ("access_token" in doc) {
+                    setToken(doc)
+                }
+            })
+            .catch(err => console.log(err))
+    }, [])
+
     const appCtx = {
         user: {
             jwt: {
                 token,
-                setToken
+                signIn,
+                signOut
             },
-            tokenURL: "http://localhost:8005/oauth2/token"
         },
         statement: {
             listURL: "http://localhost:8005/statements/list",
@@ -28,14 +53,12 @@ function App() {
         }
     }
 
-    // console.log(appCtx.jwt)
-
     if (appCtx.user.jwt.token == null) {
         return (
             <StrictMode>
                 <AppContext.Provider value={appCtx}>
                     <Container>
-                        <Row> <Col> <Login/> </Col> </Row>
+                        <Row> <Col> <Login signIn={signIn}/> </Col> </Row>
                     </Container>
                 </AppContext.Provider>
             </StrictMode>
