@@ -1,6 +1,6 @@
 import {ListGroup} from "react-bootstrap";
 
-function statementList2Map(statementList) {
+function statementListToMap(statementList) {
 
     const statementMap = new Map()
 
@@ -14,13 +14,13 @@ function statementList2Map(statementList) {
 
 }
 
-export default function StatementList({editable, statementList, statement, setSelectstatement}) {
+export default function StatementList({editable, statementList, statement, setSelectstatement: setStatementToSelect}) {
 
-    const statementMap = statementList2Map(statementList)
+    const statementMap = statementListToMap(statementList)
 
     const stockClickHandle = (e) => {
         const selected = statementMap.get(e.target.innerText)
-        setSelectstatement(selected)
+        setStatementToSelect(selected)
     }
 
     return (
