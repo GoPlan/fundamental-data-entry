@@ -24,6 +24,7 @@ function docToStatement(statement) {
 export default function StatementPanel() {
 
     const appCtx = useContext(AppContext)
+    const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
 
     const [statementList, setStatementList] = useState([])
     const [statement, setStatement] = useState(null)
@@ -32,7 +33,6 @@ export default function StatementPanel() {
 
     useEffect(() => {
         const listURL = appCtx.statement.listURL
-        const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
 
         fetch(listURL, {
             headers: {
@@ -62,7 +62,6 @@ export default function StatementPanel() {
         const quarter = statementToSelect.quarter
 
         const fetchURL = `${getURL}/${stockcode}/${statementtype}/${quarter}`
-        const authorizationBearer = `Bearer ${appCtx.user.jwt.token.access_token}`
 
         fetch(fetchURL, {
             headers: {

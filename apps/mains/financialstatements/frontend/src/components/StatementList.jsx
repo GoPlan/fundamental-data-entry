@@ -11,7 +11,6 @@ function statementListToMap(statementList) {
     }
 
     return statementMap
-
 }
 
 export default function StatementList({editable, statementList, statement, setSelectstatement: setStatementToSelect}) {
