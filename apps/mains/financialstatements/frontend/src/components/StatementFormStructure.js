@@ -22,8 +22,19 @@ const StatementFormStructure = {
         // "ProfitAfterTaxForMinorityInterest",
         // "ProfitAfterTaxForShareholdersOfParentCompany"
     ],
-    Balance: [],
-    Cashflow: []
+    Balance: [
+        "Assets",
+        "Liabilities",
+        "Equities"
+    ],
+    Cashflow: [
+        "Operating",
+        "Investing",
+        "Financing",
+        "NetCashAndCashEquivalents",
+        "CashAtBeginningOfPeriod",
+        "CashAtEndOfPeriod"
+    ]
 }
 
 export default StatementFormStructure

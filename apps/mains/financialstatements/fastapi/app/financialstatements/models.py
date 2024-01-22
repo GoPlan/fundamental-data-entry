@@ -10,10 +10,9 @@ class StatementField(BaseModel):
 
 
 class Statement(BaseModel):
-    # username: str
     stockcode: str
+    period: str
     statementtype: str
-    quarter: str
     releasedate: Union[datetime, None] = None
     statementfields: List[StatementField] = None
 
@@ -27,9 +26,8 @@ class StatementList(RootModel):
 
 
 class StatementFieldUpdate(BaseModel):
-    # username: str
     stockcode: str
+    period: str
     statementtype: str
-    quarter: str
     fieldname: str
     value: Union[float, None] = None

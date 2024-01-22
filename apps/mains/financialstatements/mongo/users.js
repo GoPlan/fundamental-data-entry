@@ -26,3 +26,21 @@ db[users_coll].updateOne(
         upsert: true
     }
 )
+
+db[users_coll].updateOne(
+    {
+        username: "user01",
+    },
+    {
+        "$set": {
+            password_hash: null,
+            email: "user01@example.com",
+            planet: "Mars",
+            disabled: false,
+            expired: true
+        }
+    },
+    {
+        upsert: true
+    }
+)
