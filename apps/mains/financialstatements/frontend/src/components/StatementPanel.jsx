@@ -4,7 +4,6 @@ import {Col, Container, Row} from "react-bootstrap";
 import StatementStockCodeList from "./StatementStockCodeList";
 import StatementForm from "./StatementForm";
 import {AppContext} from "./AppContext";
-import StatementPeriodList from "./StatementPeriodList";
 import StatementTable from "./StatementTable";
 
 function fieldsListToMap(fieldsList) {
@@ -27,26 +26,6 @@ function statementsDocToList(docs) {
     return docs
 }
 
-function statementsListToPeriodsMap(statementsList) {
-
-    // TODO: Potential performance issue
-    //  This function potentially has performance issue
-    //  since a doc is copied forEach statementsList item
-
-    const periodsMap = {}
-
-    statementsList.forEach(item => {
-        const period = item.period
-        const statementtype = item.statementtype
-        const statementfields = item.statementfields
-
-        periodsMap[period] = {...periodsMap[period]}
-        periodsMap[period][statementtype] = statementfields
-    })
-
-    return periodsMap
-}
-
 export default function StatementPanel() {
 
     const appCtx = useContext(AppContext)
@@ -55,8 +34,7 @@ export default function StatementPanel() {
     const [stockcodeList, setStockcodeList] = useState([])
     const [currentStockCode, setCurrentStockCode] = useState(null)
     const [statementsList, setStatementsList] = useState([])
-    // const [statement, setStatement] = useState(null)
-    // const [statementToSelect, setStatementToSelect] = useState(null)
+    const [currentStatement, setCurrentStatement] = useState(null)
     const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
@@ -74,13 +52,33 @@ export default function StatementPanel() {
             })
     }, [appCtx]);
 
-    // const reloadCurrentStatement = useCallback(() => {
-    //     setStatementToSelect({
-    //         stockcode: statement.stockcode,
-    //         statementtype: statement.statementtype,
-    //         quarter: statement.quarter
-    //     })
-    // }, [statement])
+    const selectStatement = useCallback((stockcode, period, statementtype) => {
+        const getURL = appCtx.statement.getStatementURL
+        const fetchURL = `${getURL}/${stockcode}/${period}/${statementtype}`
+
+        fetch(fetchURL, {
+            headers: {
+                Accept: "application/json",
+                Authorization: authorizationBearer
+            }
+        })
+            .then(res => res.json())
+            .then(doc => {
+                setCurrentStatement(docToStatement(doc))
+            })
+    }, [appCtx])
+
+    const deSelectStatement = useCallback(() => {
+        setCurrentStatement(null)
+    })
+
+    const reloadCurrentStatement = useCallback(() => {
+        selectStatement(
+            currentStatement.stockcode,
+            currentStatement.period,
+            currentStatement.statementtype
+        )
+    }, [currentStatement])
 
     const fetchStatementList = useCallback((stockcode) => {
         const listURL = `${appCtx.statement.listStatementsURL}/${stockcode}`
@@ -95,39 +93,37 @@ export default function StatementPanel() {
             .then(docs => {
                 setStatementsList(statementsDocToList(docs))
                 setCurrentStockCode(stockcode)
+                deSelectStatement()
             })
     }, [])
 
-    // if (statementToSelect) {
-    //     const getURL = appCtx.statement.getURL
-    //     const stockcode = statementToSelect.stockcode
-    //     const statementtype = statementToSelect.statementtype
-    //     const quarter = statementToSelect.quarter
-    //
-    //     const fetchURL = `${getURL}/${stockcode}/${statementtype}/${quarter}`
-    //
-    //     fetch(fetchURL, {
-    //         headers: {
-    //             Accept: "application/json",
-    //             Authorization: authorizationBearer
-    //         }
-    //     })
-    //         .then(res => res.json())
-    //         .then(doc => {
-    //             setStatement(docToStatement(doc))
-    //             setStatementToSelect(null)
-    //         })
-    // }
+    if (currentStatement) {
+        return (
+            <Container>
+                <Row>
+                    <Col><StatementStockCodeList isEditing={isEditing}
+                                                 currentStockCode={currentStockCode}
+                                                 stockcodeList={stockcodeList}
+                                                 stockcodeSelect={fetchStatementList}/> </Col>
+                    <Col><StatementForm editable={{isEditing, setIsEditing}}
+                                        currentStatement={currentStatement}
+                                        reloadCurrentStatement={reloadCurrentStatement}/></Col>
+                </Row>
+            </Container>)
+    } else {
+        return (
+            <Container>
+                <Row>
+                    <Col><StatementStockCodeList isEditing={isEditing}
+                                                 currentStockCode={currentStockCode}
+                                                 stockcodeList={stockcodeList}
+                                                 stockcodeSelect={fetchStatementList}/> </Col>
+                    <Col><StatementTable statementsList={statementsList}
+                                         selectStatement={selectStatement}/></Col>
+                </Row>
+            </Container>
+        )
+    }
 
-    return (
-        <Container>
-            <Row>
-                <Col><StatementStockCodeList isEditing={isEditing}
-                                             currentStockCode={currentStockCode}
-                                             stockcodeList={stockcodeList}
-                                             stockcodeSelect={fetchStatementList}/> </Col>
-                <Col><StatementTable statementsList={statementsList}/></Col>
-            </Row>
-        </Container>
-    )
+
 }

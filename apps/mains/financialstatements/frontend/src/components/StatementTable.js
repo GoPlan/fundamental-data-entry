@@ -1,5 +1,7 @@
 import Table from 'react-bootstrap/Table';
-export default function StatementTable({statementsList}) {
+import {Button} from "react-bootstrap";
+
+export default function StatementTable({statementsList, selectStatement}) {
 
     return (
         <Table bordered hover>
@@ -8,16 +10,20 @@ export default function StatementTable({statementsList}) {
                 <th>Stock</th>
                 <th>Period</th>
                 <th>Statement</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             {
-                statementsList.map(item => {
+                statementsList.map((item, idx) => {
                     return (
-                        <tr>
+                        <tr key={idx}>
                             <td>{item.stockcode}</td>
                             <td>{item.period}</td>
                             <td>{item.statementtype}</td>
+                            <td>{<Button onClick={() => {
+                                selectStatement(item.stockcode, item.period, item.statementtype)
+                            }}>Select</Button>}</td>
                         </tr>
                     )
                 })
