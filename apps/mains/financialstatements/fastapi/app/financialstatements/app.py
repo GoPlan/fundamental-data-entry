@@ -7,21 +7,30 @@ from . import query, models
 app = FastAPI()
 
 
-@app.get("/list")
-async def list_statements(current_user: Annotated[User, Depends(get_current_active_user)]):
-    res = query.Statement.list(current_user.username)
-    docs = models.StatementList.model_validate(res).model_dump()
-    return docs
+@app.get("/stockcodes")
+async def list_stockcodes(current_user: Annotated[User, Depends(get_current_active_user)]):
+    stockcodes = query.Statement.list_symbols(username=current_user.username)
+    return stockcodes
 
 
-@app.get("/get/{stockcode}/{statementtype}/{quarter}")
+@app.get("/list/{stockcode}")
+async def list_statements(stockcode: str, current_user: Annotated[User, Depends(get_current_active_user)]):
+    query_docs = query.Statement.list_statements(username=current_user.username, stockcode=stockcode)
+    model_docs = models.StatementList.model_validate(query_docs).model_dump()
+    return model_docs
+
+
+@app.get("/get/{stockcode}/{period}/{statementtype}")
 async def get_statement(stockcode: str,
+                        period: str,
                         statementtype: str,
-                        quarter: str,
                         current_user: Annotated[User, Depends(get_current_active_user)]):
-    res = query.Statement.get(current_user.username, stockcode, statementtype, quarter)
-    doc = models.Statement.model_validate(res.next()).model_dump() if res.alive else None
-    return doc
+    query_docs = query.Statement.get(username=current_user.username,
+                                     stockcode=stockcode,
+                                     period=period,
+                                     statementtype=statementtype)
+    model_docs = models.Statement.model_validate(query_docs[0]).model_dump() if query_docs else None
+    return model_docs
 
 
 @app.post("/field/update")

@@ -5,26 +5,45 @@ from . import models
 class Statement():
 
     @staticmethod
-    def list(username):
+    def list_symbols(username) -> list:
         coll = statments_collection()
         res = coll.find(
             {
                 "username": username
+            },
+            {
+                "stockcode": 1
             }
         )
 
-        return res
+        docs = list(res.distinct("stockcode"))
+
+        return docs
 
     @staticmethod
-    def get(username, stockcode, statementtype, quarter):
+    def list_statements(username, stockcode):
+        coll = statments_collection()
+        res = coll.find(
+            {
+                "username": username,
+                "stockcode": stockcode
+            },
+        ).sort([("period", -1), ("statementtype", 1)])
+
+        docs = list(res)
+
+        return docs
+
+    @staticmethod
+    def get(username, stockcode, period, statementtype) -> list:
         coll = statments_collection()
         res = coll.aggregate([
             {
                 "$match": {
                     'username': username,
                     'stockcode': stockcode,
+                    'period': period,
                     'statementtype': statementtype,
-                    'quarter': quarter
                 }
             },
             {
@@ -35,7 +54,7 @@ class Statement():
                         'username': '$username',
                         'stockcode': '$stockcode',
                         'statementtype': '$statementtype',
-                        'quarter': '$quarter'
+                        'period': '$period'
                     },
                     'pipeline': [
                         {
@@ -45,7 +64,7 @@ class Statement():
                                         {'$eq': ['$username', '$$username']},
                                         {'$eq': ['$stockcode', '$$stockcode']},
                                         {'$eq': ['$statementtype', '$$statementtype']},
-                                        {'$eq': ['$quarter', '$$quarter']}
+                                        {'$eq': ['$period', '$$period']}
                                     ]
                                 }
                             }
@@ -55,7 +74,9 @@ class Statement():
             }
         ])
 
-        return res
+        docs = list(res)
+
+        return docs
 
 
 class StatementField():
@@ -66,8 +87,8 @@ class StatementField():
             {
                 "username": username,
                 "stockcode": field.stockcode,
+                "period": field.period,
                 "statementtype": field.statementtype,
-                "quarter": field.quarter,
                 "fieldname": field.fieldname
             },
             {
