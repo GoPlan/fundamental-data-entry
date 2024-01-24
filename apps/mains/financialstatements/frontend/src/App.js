@@ -1,10 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import {StrictMode, useCallback, useState} from "react";
-import {Col, Container, Row} from "react-bootstrap";
+import {useCallback, useState} from "react";
 
-import StatementPanel from "./components/StatementPanel";
-import Login from "./components/Login"
+import StockPanel from "./components/StockPanel";
+import SignIn from "./components/SignIn"
 import {AppContext} from "./components/AppContext";
+import AppHolder from "./components/AppHolder";
 
 function validateAuthDoc(doc) {
     return "access_token" in doc
@@ -20,7 +19,7 @@ function App() {
         },
         statement: {
             listStockCodesURL: "http://localhost:8005/statements/stockcodes",
-            listStatementsURL : "http://localhost:8005/statements/list",
+            listStatementsURL: "http://localhost:8005/statements/list",
             getStatementURL: "http://localhost:8005/statements/get"
         },
         statementField: {
@@ -67,23 +66,19 @@ function App() {
 
     if (appCtx.user && appCtx.user.jwt && appCtx.user.jwt.token) {
         return (
-            <StrictMode>
-                <AppContext.Provider value={appCtx}>
-                    <Container>
-                        <Row> <Col> <StatementPanel/> </Col> </Row>
-                    </Container>
-                </AppContext.Provider>
-            </StrictMode>
+            <AppContext.Provider value={appCtx}>
+                <AppHolder>
+                    <AppHolder.Shell name="Statements">
+                        <StockPanel/>
+                    </AppHolder.Shell>
+                </AppHolder>
+            </AppContext.Provider>
         )
     } else {
         return (
-            <StrictMode>
-                <AppContext.Provider value={appCtx}>
-                    <Container>
-                        <Row> <Col> <Login signIn={signIn}/> </Col> </Row>
-                    </Container>
-                </AppContext.Provider>
-            </StrictMode>
+            <AppContext.Provider value={appCtx}>
+                <SignIn signIn={signIn}/>
+            </AppContext.Provider>
         )
     }
 }
